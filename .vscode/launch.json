@@ -1,0 +1,29 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "Debug User Service",
+      "cwd": "${workspaceFolder}/services/user",
+      "program": "${workspaceFolder}/services/user/node_modules/.bin/serverless",
+      "args": ["offline", "--stage", "local"],
+      "console": "integratedTerminal",
+      "internalConsoleOptions": "neverOpen",
+      "preLaunchTask": "build",
+      "runtimeArgs": ["--inspect", "--debug-port=9229"],
+      "port": 9229
+    },
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "Unit Tests User Service",
+      "cwd": "${workspaceFolder}/services/user",
+      "program": "${workspaceFolder}/services/user/node_modules/mocha/bin/_mocha",
+      "args": ["-r", "ts-node/register", "tests/**/*.ts", "-u", "bdd", "--timeout", "999999", "--colors", "--stage", "local", "--exit"],
+      "console": "integratedTerminal",
+      "internalConsoleOptions": "neverOpen",
+      "env": { "TABLE_NAME": "serverless-mono-repo-users-table-local" }
+    }
+  ]
+}

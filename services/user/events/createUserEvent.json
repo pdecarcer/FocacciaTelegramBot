@@ -1,0 +1,5 @@
+{
+  "path": "users",
+  "httpMethod": "POST",
+  "body": "{\"user_id\":\"1\",\"name\":\"Peter\",\"last_name\":\"de Carcer\",\"age\":\"12\"}"
+}

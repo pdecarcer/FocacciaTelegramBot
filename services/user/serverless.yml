@@ -1,0 +1,79 @@
+service: serverless-mono-repo
+# app and org for use with dashboard.serverless.com
+# Para utilizar el perfil de serverless hay que sacar tener cuenta
+app: serverless-mono-repo
+org: pdecarcer
+
+# You can pin your service to only deploy with a specific Serverless version
+# Check out our docs for more details
+frameworkVersion: '2'
+plugins:
+  - serverless-dynamodb-local
+  - serverless-bundle
+  - serverless-offline
+provider:
+  name: aws
+  runtime: nodejs12.x
+  profile: ${opt:profile,"choronako"}
+  stage: ${opt:stage,"dev"}
+  region: ${opt:region, 'us-east-1'}
+  timeout: ${file(../../config.yml):timeout}
+  memorySize: ${file(../../config.yml):memorySize}
+  iamRoleStatements:
+    - Effect: 'Allow'
+      Action:
+        - 'dynamodb:PutItem'
+        - 'dynamodb:Scan'
+      Resource:
+        - 'arn:aws:dynamodb:${self:provider.region}:033479940924:table/${self:custom.DynamoDbTableName}'
+
+functions:
+  userCreate:
+    handler: src/services/index.createHandler
+    environment:
+      TABLE_NAME: ${self:custom.DynamoDbTableName}
+    package:
+      exclude:
+        - test/**
+    events:
+      - http:
+          path: users
+          method: post
+          cors: true
+  userList:
+    handler: src/services/index.listHandler
+    environment:
+      TABLE_NAME: ${self:custom.DynamoDbTableName}
+    package:
+      exclude:
+        - test/**
+    events:
+      - http:
+          path: users
+          method: get
+          request:
+            parameters:
+              querystrings:
+                page: false
+                limit: false
+          cors: true
+custom:
+  DynamoDbTableName: ${self:service}-users-table-${self:provider.stage}
+  dynamodb:
+    stages:
+      - ${self:provider.stage}
+    start:
+      migrate: true
+resources:
+  Resources:
+    myDynamoDbTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        AttributeDefinitions:
+          - AttributeName: user_id
+            AttributeType: S
+        KeySchema:
+          - AttributeName: user_id
+            KeyType: HASH
+        BillingMode: PAY_PER_REQUEST
+        TableName: ${self:custom.DynamoDbTableName}

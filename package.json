@@ -1,0 +1,50 @@
+{
+  "name": "serverless-mono-repo",
+  "version": "1.0.0",
+  "description": "",
+  "main": "handler.js",
+  "scripts": {
+    "test": "serverless-bundle test",
+    "lint": "eslint './services' './libs' './libs.tests' './tests' --ext .ts",
+    "test-libs": "env TS_NODE_COMPILER_OPTIONS='{\"module\": \"commonjs\" }' mocha -r ts-node/register 'tests/**/*.ts'",
+    "build-user": "tsc: build -${workspaceFolder}/services/user/tsconfig.json",
+    "compile": "tsc",
+    "prettier": "prettier -w ."
+  },
+  "devDependencies": {
+    "@types/aws-lambda": "^8.10.62",
+    "@types/chai": "^4.2.12",
+    "@types/mocha": "^8.0.3",
+    "@types/node": "^13.13.5",
+    "@types/rosie": "0.0.38",
+    "@types/serialize-error": "^4.0.1",
+    "@types/sinon": "^9.0.7",
+    "@types/sinon-chai": "^3.2.5",
+    "@types/yup": "^0.29.8",
+    "aws-sdk": "^2.761.0",
+    "chai": "^4.2.0",
+    "eslint-config-airbnb": "^18.2.1",
+    "eslint-config-airbnb-typescript": "^12.0.0",
+    "eslint-config-prettier": "^7.0.0",
+    "eslint-plugin-import": "^2.22.1",
+    "eslint-plugin-jsx-a11y": "^6.4.1",
+    "eslint-plugin-mocha": "^8.0.0",
+    "eslint-plugin-prettier": "^3.3.0",
+    "mocha": "^8.1.3",
+    "prettier": "2.1.2",
+    "rosie": "^2.0.1",
+    "serverless": "^2.3.0",
+    "serverless-bundle": "^4.2.0",
+    "serverless-offline": "^6.8.0",
+    "sinon": "^9.2.0",
+    "sinon-chai": "^3.5.0",
+    "ts-error": "^1.0.6",
+    "typescript": "^3.9.7",
+    "yup": "^0.29.3"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "test": "^0.6.0"
+  }
+}
