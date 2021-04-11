@@ -1,0 +1,27 @@
+rememberMeTable:
+  Type: AWS::DynamoDB::Table
+  Properties:
+    TableName: ${self:custom.RememberMeTable}
+    AttributeDefinitions:
+        #There are less attributes than the model because there are some of them that are optional  
+      - AttributeName: chatId
+        AttributeType: N
+      - AttributeName: createdAt
+        AttributeType: S
+    KeySchema:
+        #Defining a composite primary key
+      - AttributeName: chatId
+        KeyType: HASH
+      - AttributeName: createdAt
+        KeyType: RANGE
+    BillingMode: PAY_PER_REQUEST
+    TimeToLiveSpecification:
+        AttributeName: ExpirationDate
+        Enabled: true
+    StreamSpecification:
+      StreamViewType: NEW_AND_OLD_IMAGES
+            
+tableName: focaccia-remember-table-${self:provider.stage}
+ARN:
+  Fn::Sub:
+   'arn:aws:dynamodb:${self:custom.common.arnRegionAndAccount}:table/${self:custom.RememberMeTable}'

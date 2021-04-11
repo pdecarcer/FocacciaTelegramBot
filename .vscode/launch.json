@@ -4,26 +4,35 @@
     {
       "type": "node",
       "request": "launch",
-      "name": "Debug User Service",
-      "cwd": "${workspaceFolder}/services/user",
-      "program": "${workspaceFolder}/services/user/node_modules/.bin/serverless",
-      "args": ["offline", "--stage", "local"],
+      "name": "Debug Services unwatch",
+      "cwd": "${workspaceFolder}",
+      "runtimeExecutable": "yarn",
       "console": "integratedTerminal",
       "internalConsoleOptions": "neverOpen",
-      "preLaunchTask": "build",
-      "runtimeArgs": ["--inspect", "--debug-port=9229"],
+      "runtimeArgs": ["run","offline","--webpack-no-watch"],
       "port": 9229
     },
     {
       "type": "node",
       "request": "launch",
-      "name": "Unit Tests User Service",
-      "cwd": "${workspaceFolder}/services/user",
-      "program": "${workspaceFolder}/services/user/node_modules/mocha/bin/_mocha",
-      "args": ["-r", "ts-node/register", "tests/**/*.ts", "-u", "bdd", "--timeout", "999999", "--colors", "--stage", "local", "--exit"],
+      "name": "Debug Services watched",
+      "cwd": "${workspaceFolder}",
+      "runtimeExecutable": "yarn",
       "console": "integratedTerminal",
       "internalConsoleOptions": "neverOpen",
-      "env": { "TABLE_NAME": "serverless-mono-repo-users-table-local" }
+      "runtimeArgs": ["run","offline"],
+      "port": 9229
+    },
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "Debug Test",
+      "cwd": "${workspaceFolder}",
+      "runtimeExecutable": "yarn",
+      "console": "integratedTerminal",
+      "internalConsoleOptions": "neverOpen",
+      "runtimeArgs": ["run","test"],
+      "port": 9229
     }
   ]
 }

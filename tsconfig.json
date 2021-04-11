@@ -1,32 +1,32 @@
 {
-  "compilerOptions": {
-      "target": "es2017",
-      "removeComments": true,
-      "watch": true,
-      "module": "commonjs",
-      "outDir": "./dist",
-      "moduleResolution": "node",
-      "esModuleInterop": true,
-      "alwaysStrict": true,
-      "noImplicitAny": false,
-      "allowSyntheticDefaultImports": true,
-      "strictNullChecks": true,
-      "lib": [
-          "es2017",
-          "esnext.asynciterable"
-      ],
-      "sourceMap": true,
-      "baseUrl": "."
-  },
-  "include": [
-      "./libs/**/*.ts",
-      "./libs.tests/**/*.ts",
-      "./services/**/*.ts",
-      "./tests/**/*.ts"
-  ],
-  "exclude": [
-      "./node_modules",
-      ".serverless",
-      ".webpack"
-  ]
+    "compilerOptions": {
+        "target": "es2017",
+        "removeComments": true,
+        "watch": true,
+        "module": "commonjs",
+        "outDir": "./dist",
+        "moduleResolution": "node",
+        "esModuleInterop": true,
+        "alwaysStrict": true,
+        "noImplicitAny": false,
+        "allowSyntheticDefaultImports": true,
+        "strictNullChecks": true,
+        "lib": [
+            "es2017",
+            "esnext.asynciterable"
+        ],
+        "sourceMap": true,
+        "baseUrl": "."
+    },
+    "include": [
+        "./libs/**/*.ts",
+        "./libs.tests/**/*.ts",
+        "./src/**/*.ts",
+        "./tests/**/*.ts"
+    ],
+    "exclude": [
+        "./node_modules",
+        ".serverless",
+        ".webpack"
+    ]
 }

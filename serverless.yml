@@ -1,0 +1,98 @@
+# NOTE: update this with your service name
+service: focaccia-telegram-bot
+
+plugins:
+  - serverless-webpack
+  - serverless-offline
+  - serverless-dynamodb-local
+  - serverless-export-env
+
+provider:
+  name: aws
+  runtime: nodejs12.x
+  profile: ${opt:profile, "choronako"}
+  stage: ${opt:stage,"dev"}
+  region: ${opt:region, 'us-east-1'}
+  timeout: 28
+  memorySize: 128
+  environment: ${self:custom.common.env}
+  httpApi: 
+    cors: true
+    payload: '1.0'
+  logs:
+    httpApi: true
+  iamRoleStatements:
+    - Effect: 'Allow'
+      Action:
+        - 'dynamodb:PutItem'
+        - 'dynamodb:GetItem'
+        - 'dynamodb:Query'
+      Resource:
+        - ${self:custom.common.remember.ARN}
+    - Effect: 'Allow'
+      Action:
+        - "lambda:InvokeFunction"
+        - "lambda:InvokeAsync"
+      Resource: '*'
+
+resources:
+  Resources:
+    RememberTable: ${self:custom.common.remember.rememberMeTable}
+ 
+
+functions:
+  focacciaBot:
+    handler: src/controllers/index.focacciaBot
+    package:
+      exclude:
+        - node_modules/**
+        - libs.tests/**
+        - tests/**
+    events:
+      - httpApi:
+          path: /focaccia
+          method: POST
+
+  sendFocacciaMessage:
+    handler: src/controllers/sendMessage.sendMessage
+    name: sendFocacciaMessage
+
+  sendReminder:
+    handler: src/controllers/reminder.reminder
+    package:
+      individually: true
+      exclude:
+        - node_modules/**
+        - tests/**
+        - libs.tests/**
+    events:
+      - stream:
+          type: dynamodb
+          batchSize: 1
+          startingPosition: LATEST
+          arn: 
+            Fn::GetAtt: [ RememberTable, StreamArn ]
+
+
+custom:
+  webpack:
+    webpackConfig: ./webpack.config.js
+    includeModules: true
+    packager: yarn 
+  export-env:
+    pathFromRoot: "./"
+    filename: ${self:provider.stage}.env
+  dynamodb:
+    stages:
+      - ${self:provider.stage}
+    start:
+      port: 8000
+      migrate: true
+      inMemory: true
+      seed: true
+  RememberMeTable: ${self:custom.common.remember.tableName}
+  common:
+    arnRegionAndAccount: ${self:provider.region}:${AWS::AccountId}
+    env: ${file(./env/${self:provider.stage}.yml)}
+    remember: ${file(./serverless.config/rememberMe.yml)}
+

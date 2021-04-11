@@ -1,0 +1,25 @@
+{
+  "Records": [
+  {
+    "eventID": "9dc890e7bef7008ecf709700eeba606f",
+    "eventName": "REMOVE",
+    "eventVersion": "1.1",
+    "eventSource": "aws:dynamodb",
+    "awsRegion": "us-east-1",
+    "dynamodb": {
+      "ApproximateCreationDateTime": 1617556467,
+      "Keys": { "createdAt": {"S":""}, "chatId": {"N":120442062} },
+      "OldImage": {
+        "createdAt": {"S": ""},
+        "ExpirationDate": {"S": ""},
+        "chatId": {"N": 120442062},
+        "step": {"S": "salt"},
+        "message": {"S": "Prueba tres"}
+      },
+      "SequenceNumber": "6478800000000009686837000",
+      "SizeBytes": 234,
+      "StreamViewType": "NEW_AND_OLD_IMAGES"
+    },
+    "eventSourceARN": "arn:aws:dynamodb:us-east-1:033479940924:table/focaccia-remember-table-dev/stream/2021-04-03T07:15:18.159"
+  }
+]}
